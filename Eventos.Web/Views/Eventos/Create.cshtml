@@ -1,0 +1,19 @@
+@model Evento
+@{
+    ViewData["Title"] = "Nuevo evento";
+}
+
+<h1 class="h3">Nuevo evento</h1>
+
+<form asp-action="Create" method="post" class="bg-white border rounded p-3">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <partial name="_Formulario" model="Model" />
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a asp-action="Index" class="btn btn-link">Cancelar</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

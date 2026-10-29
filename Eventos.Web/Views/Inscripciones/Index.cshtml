@@ -1,0 +1,62 @@
+@model IEnumerable<Inscripcion>
+@{
+    ViewData["Title"] = "Inscripciones";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Inscripciones</h1>
+    <a asp-action="Create" class="btn btn-primary">Nueva inscripción</a>
+</div>
+
+<table class="table table-striped table-hover align-middle bg-white">
+    <thead>
+        <tr>
+            <th>Evento</th>
+            <th>Asistente</th>
+            <th>Fecha de inscripción</th>
+            <th>Estado</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Evento?.Titulo
+                    <div class="small text-muted">@item.Evento?.Fecha.ToString("dd/MM/yyyy HH:mm")</div>
+                </td>
+                <td>
+                    @item.Asistente?.Nombres
+                    <div class="small text-muted">DNI @item.Asistente?.Dni</div>
+                </td>
+                <td>@item.FechaInscripcion.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>
+                    @if (item.Estado == "Confirmada")
+                    {
+                        <span class="badge bg-success">Confirmada</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Cancelada</span>
+                    }
+                </td>
+                <td class="text-end">
+                    @if (item.Estado == "Confirmada")
+                    {
+                        <form asp-action="Cancelar" asp-route-id="@item.Id" method="post" class="d-inline"
+                              onsubmit="return confirm('¿Desea cancelar esta inscripción?');">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Cancelar</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="5" class="text-center text-muted py-4">No hay inscripciones registradas.</td>
+            </tr>
+        }
+    </tbody>
+</table>
